@@ -1,0 +1,9 @@
+services:
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: n.usher87@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: example
+    ports:
+      - "5050:80"

@@ -8,6 +8,9 @@ services:
 #      MONGO_INITDB_ROOT_USERNAME: root
 #      MONGO_INITDB_ROOT_PASSWORD: example
 
+
+# TODO: create a seperate MQTT -> Database agent
+
   db:
     image: timescale/timescaledb:latest-pg14
     ports:

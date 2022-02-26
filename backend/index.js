@@ -10,10 +10,19 @@ let PageLoads = sequelize.define('page_loads', {
     time: { type: Sequelize.DATE, primaryKey: true }
 }, { timestamps: false });
 
-
 // Declare a route
-app.get('/', function (req, reply) {
-    reply.send({ hello: 'nated0g' })
+app.get('/', async (req, reply) => {
+    const userAgent = req.headers['user-agent'];
+    const time = new Date().getTime();
+
+    try {
+        await PageLoads.create({ userAgent, time });
+
+        const messages = await PageLoads.findAll();
+        reply.send(messages);
+    } catch (e) {
+        console.log('Error inserting data', e);
+    }
 })
 
 sequelize.authenticate().then(() => {
