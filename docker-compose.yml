@@ -1,15 +1,6 @@
 services:
-#  mongo:
-#    image: mongo
-#    restart: always
-#    volumes:
-#      - db-data:/data/db
-#    environment:
-#      MONGO_INITDB_ROOT_USERNAME: root
-#      MONGO_INITDB_ROOT_PASSWORD: example
-
-
 # TODO: create a seperate MQTT -> Database agent
+
 
   db:
     image: timescale/timescaledb:latest-pg14
