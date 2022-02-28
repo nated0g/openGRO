@@ -1,0 +1,12 @@
+tasks:
+  - init: |
+      docker-compose pull
+  - command: |
+      docker-compose up
+ports:
+  - port: 3000
+    onOpen: open-browser
+  - port: 3001
+    onOpen: open-browser
+  - port: 3002
+    onOpen: open-browser
