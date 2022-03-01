@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class page_loads extends Model {
+  class Telemetry extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,12 +13,23 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  page_loads.init({
-    userAgent: DataTypes.STRING,
-    time: DataTypes.DATE
+  Telemetry.init({
+    time: {
+      type: DataTypes.DATE,
+      primaryKey: true
+    },
+    location: {
+      type: DataTypes.STRING, 
+      primaryKey: true
+    },
+    tempC: DataTypes.REAL,
+    RH: DataTypes.REAL,
+    CO2: DataTypes.INTEGER,
   }, {
     sequelize,
-    modelName: 'page_loads',
+    modelName: 'Telemetry',
+    tableName: 'telemetry',
+    timestamps: false
   });
-  return page_loads;
+  return Telemetry;
 };

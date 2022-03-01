@@ -1,0 +1,4 @@
+topics:
+  telemetry: 
+    topic: "+/telemetry"
+    handler: "Telemetry"

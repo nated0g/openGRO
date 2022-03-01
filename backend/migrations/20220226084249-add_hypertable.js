@@ -2,7 +2,7 @@
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.sequelize.query("SELECT create_hypertable('page_loads', 'time');");
+    return queryInterface.sequelize.query("SELECT create_hypertable('telemetry', 'time');");
     /**
      * Add altering commands here.
      *
