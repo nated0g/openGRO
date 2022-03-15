@@ -1,13 +1,14 @@
+version: '3.8'
+
 services:
-  # TODO: create a seperate MQTT -> Database agent
-
-
   db:
     image: timescale/timescaledb:latest-pg14
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_PASSWORD=example
+      POSTGRES_DB:
+      POSTGRES_USER:
+      POSTGRES_PASSWORD:
     volumes:
       - psql-data:/var/lib/postgresql/data
 
@@ -21,9 +22,7 @@ services:
   grafana:
     image: grafana/grafana:latest
     ports:
-      - "3000:3000"
-    environment:
-      - GF_INSTALL_PLUGINS=grafana-mongodb-datasource
+      - "3001:3000"
     volumes:
       - grafana-data:/var/lib/grafana
 
@@ -38,27 +37,32 @@ services:
     ports:
       - "80:80"
       #- "443:443"
-    environment:
-      - OAUTH_CLIENT_ID
-      - AUTH0_DOMAIN
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
+      #args:
+      #  - API_PORT=3000
+      #   DB_HOST:
+      #   DB_PORT:
+      #   DB_DIALECT:
+      #   POSTGRES_DB:
+      #   POSTGRES_USER:
+      #   POSTGRES_PASSWORD:
     ports:
-      - "3002:3000"
+      - "3000:3000"
     volumes:
       - ./backend:/app
-
-  vouch:
-    image: voucher/vouch-proxy
-    volumes:
-      - ./vouch/config/config.yml:/config/config.yml
     environment:
-      - OAUTH_CLIENT_ID
-      - OAUTH_CLIENT_SECRET
-
+      - API_PORT
+      - DB_HOST
+      - DB_PORT
+      - DB_DIALECT
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      
 volumes:
   psql-data: {}
   mqtt-config: {}
