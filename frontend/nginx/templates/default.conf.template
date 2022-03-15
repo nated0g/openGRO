@@ -1,0 +1,43 @@
+server {
+  listen 80;
+  server_name localhost;
+
+  location ^~ /sso/ {
+    location /sso/validate {
+      proxy_pass http://vouch:9090/validate;
+      proxy_set_header Host $http_host;
+      proxy_pass_request_body off;
+    }
+
+    location = /sso/logout {
+      proxy_pass http://vouch:9090/logout?url=${AUTH0_DOMAIN}/v2/logout?client_id=${OAUTH_CLIENT_ID}%26returnTo=http://localhost/;
+      proxy_set_header Host $http_host;
+    }
+
+    proxy_set_header Host $http_host;
+    proxy_pass http://vouch:9090/;
+  }
+
+  location / {
+    auth_request /sso/validate;
+    root /usr/share/nginx/html;
+    index index.html;
+    try_files $uri $uri/ /index.html;
+    
+    expires 0;
+    add_header Cache-Control "no-cache, no-store, must-revalidate, max-age=0";
+    add_header Pragma "no-cache";
+
+    error_page 401 = @prompt_login;
+  }
+
+  location /auth {
+    proxy_pass http://vouch:9090/auth;
+    proxy_set_header Host $http_host;
+    proxy_pass_request_body off;
+  }
+
+  location @prompt_login {
+    return 302 http://localhost/sso/login?url=$scheme://$http_host$request_uri;
+  }
+}

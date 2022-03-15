@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { Dialog, Transition } from '@headlessui/react'
 import { BookmarkAltIcon, FireIcon, HomeIcon, InboxIcon, MenuIcon, UserIcon, XIcon, LoginIcon } from '@heroicons/react/outline'
 import { Routes, Route, Link } from "react-router-dom";
-import  Login  from "./components/login";
+import Login from "./components/login";
 
 const demoUser = {
   name: 'Emily Selman',
@@ -20,8 +20,6 @@ const navigation = [
   { name: 'Messages', href: '#', icon: InboxIcon },
   { name: 'Profile', href: '#', icon: UserIcon },
 ]
-
-
 
 export default function App() {
 
@@ -183,10 +181,16 @@ export default function App() {
                     </div>
                   </a>
                 ) : (
-                  <Link to={"/login"} className="flex w-full items-center p-4 rounded-lg text-indigo-200 hover:bg-indigo-700">
-                    <LoginIcon className="block mx-auto h-6 w-6" aria-hidden="true" />
-                    <p className="text-center text-xs">Sign In</p>
-                  </Link>
+                  <div>
+                    <Link to={"/sso/login?url=http\:\/\/localhost/protected"} className="flex w-full items-center p-4 rounded-lg text-indigo-200 hover:bg-indigo-700">
+                      <LoginIcon className="block mx-auto h-6 w-6" aria-hidden="true" />
+                      <p className="text-center text-xs">Log In</p>
+                    </Link>
+                    <a href="/sso/logout" className="flex w-full items-center p-4 rounded-lg text-indigo-200 hover:bg-indigo-700">
+                      <LoginIcon className="block mx-auto h-6 w-6" aria-hidden="true" />
+                      <p className="text-center text-xs">Log Out</p>
+                    </a>
+                  </div>
                 )}
               </div>
             </div>
@@ -226,7 +230,7 @@ export default function App() {
               <h1 id="primary-heading" className="sr-only">
                 Account
               </h1>
-            
+
               <Routes>
                 <Route
                   path="/login"
@@ -235,8 +239,7 @@ export default function App() {
                   )
 
                   }
-                  />
-
+                />
               </Routes>
 
             </section>
@@ -244,8 +247,6 @@ export default function App() {
             {/* Secondary column (hidden on smaller screens) */}
             <aside className="hidden lg:block lg:flex-shrink-0 lg:order-first">
               <div className="h-full relative flex flex-col w-96 border-r border-gray-200 bg-white overflow-y-auto">
-
-
 
               </div>
             </aside>

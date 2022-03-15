@@ -1,5 +1,5 @@
 services:
-# TODO: create a seperate MQTT -> Database agent
+  # TODO: create a seperate MQTT -> Database agent
 
 
   db:
@@ -9,7 +9,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=example
     volumes:
-      - psql-data:/var/lib/postgresql/data 
+      - psql-data:/var/lib/postgresql/data
 
   mqtt:
     image: eclipse-mosquitto:latest
@@ -27,22 +27,21 @@ services:
     volumes:
       - grafana-data:/var/lib/grafana
 
-# To be used later for reverse-proxy
-#  nginx:
-#    image: nginx
-#    ports:
-#      - "80:80"    
-#      - "443:443"
-    
   frontend:
-    build: 
+    build:
       context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "3001:3000"
     volumes:
-      - ./frontend/app:/app
-    
+      - ./frontend/nginx/templates:/etc/nginx/templates
+      - ./frontend/app/build:/usr/share/nginx/html
+    depends_on:
+      - vouch
+    ports:
+      - "80:80"
+      #- "443:443"
+    environment:
+      - OAUTH_CLIENT_ID
+      - AUTH0_DOMAIN
+
   backend:
     build:
       context: ./backend
@@ -51,6 +50,14 @@ services:
       - "3002:3000"
     volumes:
       - ./backend:/app
+
+  vouch:
+    image: voucher/vouch-proxy
+    volumes:
+      - ./vouch/config/config.yml:/config/config.yml
+    environment:
+      - OAUTH_CLIENT_ID
+      - OAUTH_CLIENT_SECRET
 
 volumes:
   psql-data: {}

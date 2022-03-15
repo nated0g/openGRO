@@ -1,0 +1,45 @@
+# vouch configuration
+# bare minimum to get vouch running with OpenID Connect (such as okta)
+
+vouch:
+  logLevel: debug
+  testing: false
+  listen: 0.0.0.0
+  port: 9090
+  allowAllUsers: true
+
+  jwt:
+    secret: Your-64-character-secret-key-here
+    issuer: Vouch
+    compress: false
+  
+  cookie:
+    name: my-vouch-ct
+    secure: false
+    domain: localhost
+
+  headers:
+    jwt: X-Vouch-Token
+    querystring: access_token
+    redirect: X-Vouch-Requested-URI
+    accesstoken: X-Vouch-IdP-AccessToken
+    idtoken: X-Vouch-IdP-IdToken
+
+  post_logout_redirect_uris:
+    #- https://dev-rsg-nwj4.us.auth0.com/v2/logout?client_id=${OAUTH_CLIENT_ID}&returnTo=http://localhost/
+    - https://dev-rsg-nwj4.us.auth0.com/v2/logout?client_id=LakS5n6UGJ6RgKdIPmhhuH1XfrWN1PTO&returnTo=http://localhost/
+
+oauth:
+  provider: oidc
+  # client_id:  uses .env for safety
+  # client_secret: uses .env for safety 
+  auth_url: https://dev-rsg-nwj4.us.auth0.com/authorize
+  token_url: https://dev-rsg-nwj4.us.auth0.com/oauth/token
+  user_info_url: https://dev-rsg-nwj4.us.auth0.com/userinfo
+  scopes:
+    - openid
+    - email
+    - profile
+  callback_url: http://localhost/sso/auth
+
+
