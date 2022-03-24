@@ -5,6 +5,9 @@ import { Dialog, Transition } from '@headlessui/react'
 import { BookmarkAltIcon, FireIcon, HomeIcon, InboxIcon, MenuIcon, UserIcon, XIcon, LoginIcon } from '@heroicons/react/outline'
 import { Routes, Route, Link } from "react-router-dom";
 import Login from "./components/login";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+import axios from "axios";
 
 const demoUser = {
   name: 'Emily Selman',
@@ -20,6 +23,8 @@ const navigation = [
   { name: 'Messages', href: '#', icon: InboxIcon },
   { name: 'Profile', href: '#', icon: UserIcon },
 ]
+
+
 
 export default function App() {
 
@@ -46,6 +51,7 @@ export default function App() {
         <body class="h-full overflow-hidden">
         ```
       */}
+      
       <div className="h-full flex">
         <Transition.Root show={mobileMenuOpen} as={Fragment}>
           <Dialog as="div" className="fixed inset-0 flex z-40 lg:hidden" onClose={setMobileMenuOpen}>

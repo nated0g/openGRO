@@ -12,17 +12,22 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(morgan('dev'));
-app.use(session({ secret: 'TODO:REPLACE', resave: true, saveUninitialized:true}));
+app.use(session({ secret: 'TODO:REPLACE', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/login', passport.authenticate('local'), (req, res) => {
-  res.status(200).send({ message: 'Logged in successfully.'});
-})
+app.post('/login', (req, res, next) => {
+  passport.authenticate('local'), (err, user, info) => {
+    if (err) throw err;
+    if (!user) res.send("No user.")
+    res.status(200).send({ message: 'Logged in successfully.' });
+    console.log(req.user);
+  }(req, res, next);
+});
 
 app.get('/logout', (req, res) => {
   req.logout();
-  res.send({ message: 'Logged out.'});
+  res.send({ message: 'Logged out.' });
 })
 
 const isAuthenticated = (req, res, next) => {
@@ -48,7 +53,7 @@ app.listen(process.env.API_PORT, async () => {
     )
     await User.create({ username: "test", password: "test" });
     console.log('Connected to database');
-  } catch(error) {
+  } catch (error) {
     console.error(`Error: Can't connect to database ${error}`);
   }
 })
